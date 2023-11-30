@@ -67,14 +67,12 @@ src
 │  ├─repository
 │  └─service
 ├─budget
+│  ├─controller
+│  ├─dto
 │  ├─entity
 │  ├─repository
-│  └─scheduler
+│  └─service
 ├─expense
-│  ├─entity
-│  ├─repository
-│  └─scheduler
-├─category
 │  ├─controller
 │  ├─dto
 │  ├─entity
@@ -141,10 +139,10 @@ ERD
 ## 코드리뷰 및 에러 해결
 
 ### 로그인 회원가입
+- [회원가입](https://github.com/rivkode/budget_management/pull/4)
 
-### 맛집 평가
-- [맛집평가](https://github.com/Wanted-Internship-Team-Careerly/Location-Based-Foodie-Service/pull/15)
-- [맛집상세목록](https://github.com/Wanted-Internship-Team-Careerly/Location-Based-Foodie-Service/pull/35)
+### 예산설정
+- [예산설정](https://github.com/Wanted-Internship-Team-Careerly/Location-Based-Foodie-Service/pull/15)
 
 <br/>
 
