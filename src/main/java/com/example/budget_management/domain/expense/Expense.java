@@ -12,6 +12,7 @@ import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
+import java.time.LocalDateTime;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -37,12 +38,15 @@ public class Expense {
     @JoinColumn(name = "user_id")
     private User user;
 
+    private LocalDateTime month;
+
     @Builder
-    public Expense(Long amount, Category category, Budget budget, User user) {
+    public Expense(Long amount, Category category, Budget budget, User user, LocalDateTime month) {
         this.amount = amount;
         this.category = category;
         this.budget = budget;
         this.user = user;
+        this.month = month;
     }
 
 }
