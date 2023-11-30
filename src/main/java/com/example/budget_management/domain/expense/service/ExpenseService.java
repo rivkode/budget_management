@@ -11,9 +11,11 @@ import com.example.budget_management.domain.user.User;
 import com.example.budget_management.system.exception.CustomErrorCode;
 import com.example.budget_management.system.exception.CustomException;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+@Slf4j
 @Service
 @Transactional
 @RequiredArgsConstructor
@@ -26,7 +28,9 @@ public class ExpenseService {
         Budget budget = budgetService.getBudgetById(request.getBudgetId());
 
         //check user
-        if (!budget.getUser().equals(user)) {
+        if (!budget.getUser().getEmail().equals(user.getEmail())) {
+            log.info(budget.getUser().getEmail());
+            log.info(user.getEmail());
             throw new CustomException(CustomErrorCode.NOT_MATCH_USER);
         }
 
