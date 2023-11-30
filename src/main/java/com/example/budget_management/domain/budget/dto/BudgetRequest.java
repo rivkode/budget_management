@@ -17,11 +17,11 @@ public class BudgetRequest {
     @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "dd-MM-yyy hh:mm:ss.SSS", timezone = "Asia/Seoul")
     private LocalDateTime endAt;
 
-    public Budget toEntity(User user, BudgetRequest requestDto, Category category) {
+    public Budget toEntity(User user, BudgetRequest request, Category category) {
         return Budget.builder()
-                .amount(requestDto.getAmount())
+                .amount(request.getAmount())
                 .user(user)
-                .month(requestDto.endAt)
+                .month(request.endAt)
                 .category(category)
                 .build();
     }
