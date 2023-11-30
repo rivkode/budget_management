@@ -10,6 +10,7 @@ import io.jsonwebtoken.SignatureAlgorithm;
 import jakarta.annotation.PostConstruct;
 import jakarta.servlet.http.HttpServletRequest;
 import java.security.Key;
+import java.time.Duration;
 import java.util.Base64;
 import java.util.Date;
 import org.slf4j.Logger;
@@ -22,7 +23,7 @@ import org.springframework.util.StringUtils;
 public class JwtUtil {
     public static final String AUTHORIZATION_HEADER = "Authorization"; // Header KEY 값
     public static final String BEARER_PREFIX = "Bearer "; // Token 식별자
-    private static final long TOKEN_TIME = 30 * 60 * 1000L; // 토큰 만료시간 30분
+    private static final long TOKEN_TIME = Duration.ofMinutes(30).toMillis(); // 토큰 만료시간 30분
 
     @Value("${jwt.secret.key}") // Base 64 decode시 사용하는 Key
     private String secretKey;
