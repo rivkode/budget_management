@@ -1,6 +1,6 @@
 package com.example.budget_management.domain.user.controller;
 
-import com.example.budget_management.domain.user.dto.SignupDto;
+import com.example.budget_management.domain.user.dto.SignupRequest;
 import com.example.budget_management.domain.user.service.UserService;
 import com.example.budget_management.system.common.ApiResponseDto;
 import io.swagger.v3.oas.annotations.Operation;
@@ -23,8 +23,8 @@ public class UserController {
 
     @Operation(summary = "회원가입", description = "회원가입에 필요한 정보를 통해 가입을 진행합니다")
     @PostMapping(value = "/signup")
-    public ResponseEntity<ApiResponseDto> signup(@RequestBody SignupDto signupDto) {
-        userService.signup(signupDto);
+    public ResponseEntity<ApiResponseDto> signup(@RequestBody SignupRequest signupRequest) {
+        userService.signup(signupRequest);
 
         return ResponseEntity.ok().body(new ApiResponseDto(HttpStatus.CREATED.value(), "회원 가입 성공"));
     }
