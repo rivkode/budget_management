@@ -20,7 +20,12 @@ public class BudgetResponse {
     private Category category;
 
     public static BudgetResponse from(Budget budget) {
-        return new BudgetResponse(budget.getId(), budget.getUser().getId(), budget.getAmount(),
-                budget.getMonth(), budget.getCategory());
+        return BudgetResponse.builder()
+                .budgetId(budget.getId())
+                .userId(budget.getId())
+                .amount(budget.getAmount())
+                .endAt(budget.getMonth())
+                .category(budget.getCategory())
+                .build();
     }
 }
