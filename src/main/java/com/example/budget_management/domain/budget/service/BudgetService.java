@@ -20,19 +20,19 @@ public class BudgetService {
     private final BudgetRepository budgetRepository;
 
 
-    public BudgetResponse createBudget(BudgetRequest requestDto, User user) {
+    public BudgetResponse createBudget(BudgetRequest request, User user) {
         Budget savedBudget = budgetRepository.save(
-                requestDto.toEntity(user, requestDto, checkCategory(requestDto.getCategoryName())));
+                request.toEntity(user, request, checkCategory(request.getCategoryName())));
 
         return BudgetResponse.from(savedBudget);
     }
 
 
-    public BudgetResponse updateBudget(BudgetRequest requestDto) {
-        Budget budget = budgetRepository.findById(requestDto.getBudgetId())
+    public BudgetResponse updateBudget(BudgetRequest request) {
+        Budget budget = budgetRepository.findById(request.getBudgetId())
                 .orElseThrow(() -> new CustomException(CustomErrorCode.NOT_EXIST_BUDGET));
 
-        Budget updatedBudget = budget.update(requestDto.getAmount(), checkCategory(requestDto.getCategoryName()));
+        Budget updatedBudget = budget.update(request.getAmount(), checkCategory(request.getCategoryName()));
 
         return BudgetResponse.from(updatedBudget);
     }
