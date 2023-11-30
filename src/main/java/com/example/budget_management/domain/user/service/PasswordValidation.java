@@ -1,6 +1,6 @@
 package com.example.budget_management.domain.user.service;
 
-import com.example.budget_management.domain.user.dto.SignupDto;
+import com.example.budget_management.domain.user.dto.SignupRequest;
 import com.example.budget_management.system.exception.CustomErrorCode;
 import com.example.budget_management.system.exception.CustomException;
 import java.util.regex.Pattern;
@@ -11,9 +11,9 @@ import org.springframework.stereotype.Component;
 @NoArgsConstructor
 public class PasswordValidation {
 
-    public void validatePassword(SignupDto signupDto) {
-        String email = signupDto.getEmail();
-        String password = signupDto.getPassword();
+    public void validatePassword(SignupRequest signupRequest) {
+        String email = signupRequest.getEmail();
+        String password = signupRequest.getPassword();
 
         // 숫자, 문자, 특수문자 중 1가지 이상 포함
         if (!rules(password)) {

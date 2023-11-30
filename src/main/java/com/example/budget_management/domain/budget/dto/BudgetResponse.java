@@ -11,7 +11,7 @@ import lombok.Getter;
 @AllArgsConstructor
 @Getter
 @Builder
-public class BudgetResponseDto {
+public class BudgetResponse {
     private long budgetId;
     private long userId;
     private long amount;
@@ -19,8 +19,13 @@ public class BudgetResponseDto {
     private LocalDateTime endAt;
     private Category category;
 
-    public static BudgetResponseDto from(Budget budget) {
-        return new BudgetResponseDto(budget.getId(), budget.getUser().getId(), budget.getAmount(),
-                budget.getMonth(), budget.getCategory());
+    public static BudgetResponse from(Budget budget) {
+        return BudgetResponse.builder()
+                .budgetId(budget.getId())
+                .userId(budget.getId())
+                .amount(budget.getAmount())
+                .endAt(budget.getMonth())
+                .category(budget.getCategory())
+                .build();
     }
 }

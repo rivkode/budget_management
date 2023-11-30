@@ -1,6 +1,6 @@
 package com.example.budget_management.system.security;
 
-import com.example.budget_management.domain.user.dto.LoginRequestDto;
+import com.example.budget_management.domain.user.dto.LoginRequest;
 import com.example.budget_management.system.common.ApiResponseDto;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import jakarta.servlet.FilterChain;
@@ -27,13 +27,13 @@ public class JwtAuthenticationFilter extends UsernamePasswordAuthenticationFilte
     public Authentication attemptAuthentication(HttpServletRequest request,
             HttpServletResponse response) throws AuthenticationException {
         try {
-            LoginRequestDto loginRequestDto = new ObjectMapper().readValue(request.getInputStream(),
-                    LoginRequestDto.class);
+            LoginRequest loginRequest = new ObjectMapper().readValue(request.getInputStream(),
+                    LoginRequest.class);
 
             return getAuthenticationManager().authenticate(
                     new UsernamePasswordAuthenticationToken(
-                            loginRequestDto.getEmail(),
-                            loginRequestDto.getPassword(),
+                            loginRequest.getEmail(),
+                            loginRequest.getPassword(),
                             null
                     )
             );
