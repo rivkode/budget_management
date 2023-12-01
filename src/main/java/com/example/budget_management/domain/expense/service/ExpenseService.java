@@ -6,10 +6,13 @@ import com.example.budget_management.domain.budget.service.BudgetService;
 import com.example.budget_management.domain.expense.Expense;
 import com.example.budget_management.domain.expense.dto.ExpenseRequest;
 import com.example.budget_management.domain.expense.dto.ExpenseResponse;
+import com.example.budget_management.domain.expense.dto.ListExpenseResponse;
 import com.example.budget_management.domain.expense.repository.ExpenseRepository;
 import com.example.budget_management.domain.user.User;
 import com.example.budget_management.system.exception.CustomErrorCode;
 import com.example.budget_management.system.exception.CustomException;
+import java.time.LocalDateTime;
+import java.util.List;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
@@ -24,7 +27,7 @@ public class ExpenseService {
     private final ExpenseRepository expenseRepository;
     private final BudgetService budgetService;
 
-    public ExpenseResponse createExpense(ExpenseRequest request, User user) {
+    public ExpenseResponse createExpense(User user, ExpenseRequest request) {
         Budget budget = budgetService.getBudgetById(request.getBudgetId());
 
         //check user
@@ -38,5 +41,62 @@ public class ExpenseService {
         Expense savedExpense = expenseRepository.save(request.toEntity(user, budget, category));
 
         return ExpenseResponse.from(savedExpense);
+    }
+
+    /**
+     * 최소, 최대 금액 param 입력시 해당 조건 적용하여 결과 반환
+     * 지출 합계, 카테고리별 지출 합계
+     *
+     * 카테고리 param 입력하지 않으면 모든 내용 조회
+     * 즉, 모든 비용 반환, 카테고리별 비용 반환
+     * 기간에 해당하는 모든 expenseResponse를 List로 반환
+     *
+     * 카테고리 param 입력시 해당 카테고리 기준 조회
+     * 즉, 카테고리에 대한하는 지출 합계 반환
+     * 기간에 해당하는 모든 expenseResponse 를 List로 반환
+     *
+     * 위 내용을 카테고리 하나로 특정하면 되지 않나 ?
+     *
+     * Response 객체를 카테고리별로 나눠야 함
+     * @return
+     */
+    public ListExpenseResponse getListExpense(User user, String categoryName, LocalDateTime startAt,
+            LocalDateTime endAt, Long minAmount, Long maxAmount) {
+        checkDateStartAndEndAt(startAt, endAt);
+
+        // 카테고리별로 찾는다
+
+        // 카테고리가 입력될 경우 아닐경우 나눔
+        // 입력되면 해당 카테고리를 찾아서 반환, 아닐경우 모든 내용 조회하여 반환
+
+
+
+        return ListExpenseResponse.from();
+    }
+
+    /**
+     * todo
+     * start가 end보다 뒤일 경우 예외처리
+     * @param startAt
+     * @param endAt
+     */
+    private void checkDateStartAndEndAt(LocalDateTime startAt, LocalDateTime endAt) {
+        if (startAt.isAfter(endAt)) {
+            throw new CustomException(CustomErrorCode.NOT_VALID_DATE);
+        }
+    }
+
+    public ExpenseResponse getExpense(User user, Long expenseId) {
+        Expense expense = expenseRepository.findById(expenseId)
+                .orElseThrow(() -> new CustomException(CustomErrorCode.NOT_EXIST_EXPENSE));
+
+        //check user
+        if (!expense.getUser().getEmail().equals(user.getEmail())) {
+            log.info(expense.getUser().getEmail());
+            log.info(user.getEmail());
+            throw new CustomException(CustomErrorCode.NOT_MATCH_USER);
+        }
+
+        return ExpenseResponse.from(expense);
     }
 }
