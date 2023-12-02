@@ -15,6 +15,10 @@ public enum CustomErrorCode {
 			"3회 이상 연속되는 문자 사용이 불가합니다."),
     NOT_MATCH_USER(HttpStatus.BAD_REQUEST.value(),
             "유저가 일치하지 않습니다."),
+    NOT_VALID_DATE(HttpStatus.BAD_REQUEST.value(),
+            "유효하지 않은 날짜입니다."),
+    NOT_EXIST_EXPENSE(HttpStatus.BAD_REQUEST.value(),
+            "지출이 존재하지 않습니다."),
     NOT_EXIST_BUDGET(HttpStatus.BAD_REQUEST.value(),
             "예산이 존재하지 않습니다");
 

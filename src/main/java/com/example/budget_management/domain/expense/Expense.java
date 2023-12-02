@@ -38,15 +38,15 @@ public class Expense {
     @JoinColumn(name = "user_id")
     private User user;
 
-    private LocalDateTime month;
+    private LocalDateTime expenseDate;
 
     @Builder
-    public Expense(Long amount, Category category, Budget budget, User user, LocalDateTime month) {
+    public Expense(Long amount, Category category, Budget budget, User user, LocalDateTime expenseDate) {
         this.amount = amount;
         this.category = category;
         this.budget = budget;
         this.user = user;
-        this.month = month;
+        this.expenseDate = expenseDate;
     }
 
 }
