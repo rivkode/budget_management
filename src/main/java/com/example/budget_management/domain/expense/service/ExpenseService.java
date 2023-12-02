@@ -12,6 +12,7 @@ import com.example.budget_management.domain.user.User;
 import com.example.budget_management.system.exception.CustomErrorCode;
 import com.example.budget_management.system.exception.CustomException;
 import java.time.LocalDateTime;
+import java.util.ArrayList;
 import java.util.List;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -69,9 +70,37 @@ public class ExpenseService {
         // 카테고리가 입력될 경우 아닐경우 나눔
         // 입력되면 해당 카테고리를 찾아서 반환, 아닐경우 모든 내용 조회하여 반환
 
+        // 해당하는 기간에 모든 지출 반환
 
+        // 해당하는 기간을 뽑아온다 입력으로부터
 
-        return ListExpenseResponse.from();
+        // category가 안들어 왔을 경우 모두 반환
+
+        List<Expense> transportList = new ArrayList<>();
+        List<Expense> foodList = new ArrayList<>();
+        List<Expense> livingList = new ArrayList<>();
+        List<Expense> housingList = new ArrayList<>();
+        List<Expense> entertainmentList = new ArrayList<>();
+        List<Expense> etcList = new ArrayList<>();
+        Category[] categories = Category.values();
+
+        for (Category category : categories) {
+            List<Expense> expenses = expenseRepository.findAllByUserAndDateAndCategory(user.getId(), startAt, endAt, category.name());
+
+            // 해당 카테고리에 따라서 리스트에 추가
+            switch (category) {
+                case TRANSPORT -> transportList.addAll(expenses);
+                case FOOD -> foodList.addAll(expenses);
+                case LIVING -> livingList.addAll(expenses);
+                case HOUSING -> housingList.addAll(expenses);
+                case ENTERTAINMENT -> entertainmentList.addAll(expenses);
+                case ETC -> etcList.addAll(expenses);
+
+                // 다른 카테고리가 추가될 경우에 대한 처리도 추가할 수 있습니다.
+            }
+        }
+
+        return ListExpenseResponse.fromListExpense(transportList, foodList, livingList, housingList, entertainmentList, etcList);
     }
 
     /**
