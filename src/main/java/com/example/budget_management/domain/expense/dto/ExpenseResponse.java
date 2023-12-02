@@ -14,14 +14,14 @@ public class ExpenseResponse {
     private long amount;
     private Long expenseId;
     private Category category;
-    private LocalDateTime month;
+    private LocalDateTime expenseDate;
 
     public static ExpenseResponse from(Expense expense) {
         return ExpenseResponse.builder()
                 .amount(expense.getAmount())
                 .expenseId(expense.getId())
                 .category(expense.getCategory())
-                .month(expense.getMonth())
+                .expenseDate(expense.getExpenseDate())
                 .build();
     }
 

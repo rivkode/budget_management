@@ -25,7 +25,7 @@ public class ExpenseRequest {
                 .category(category)
                 .budget(budget)
                 .user(user)
-                .month(endAt)
+                .expenseDate(endAt)
                 .build();
     }
 
