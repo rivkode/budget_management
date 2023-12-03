@@ -91,21 +91,18 @@ Swagger : http://localhost:{port}/swagger#/
 
 <details>
 
-<summary>Get all posts - click</summary>
-<img src="./public/full.png" alt="logo" width="80%" />
-<img src="./public/members_get.png" alt="logo" width="80%" />
-<img src="./public/members_post.png" alt="logo" width="80%" />
-<img src="./public/members_put.png" alt="logo" width="80%" />
-<img src="./public/reviews_post.png" alt="logo" width="80%" />
+<summary>Swagger - click</summary>
+<img src="./public/total_api.png" alt="logo" width="80%" />
+<img src="./public/user_signup_api.png" alt="logo" width="80%" />
+<img src="public/expense_total_get_api.png" alt="logo" width="80%" />
+<img src="./public/expense_create_api.png" alt="logo" width="80%" />
+<img src="./public/budget_create_api.png" alt="logo" width="80%" />
+<img src="./public/budget_update_api.png" alt="logo" width="80%" />
 </details>
 
 <br/>
 
 ## 프로젝트 진행 및 이슈 관리
-
-[//]: # ([![Notion]&#40;https://img.shields.io/badge/Notion-%23000000.svg?style=for-the-badge&logo=notion&logoColor=white&#41;]&#40;https://www.notion.so/Team-Careerly-8d62334735154f7f9b9cbba91da21df5&#41;)
-
-[//]: # ([프로젝트 관리 페이지]&#40;https://www.notion.so/Team-Careerly-8d62334735154f7f9b9cbba91da21df5&#41;)
 
 <img src="./public/timeline.png" alt="logo" width="80%" />
 
@@ -115,7 +112,7 @@ Swagger : http://localhost:{port}/swagger#/
 
 ERD
 
-<img src="./public/erd.png" alt="logo" width="80%" />
+<img src="./public/budget_db_erd.png" alt="logo" width="80%" />
 
 [budget_management_erd](https://lucid.app/lucidchart/7e0d6cd7-f045-4cf3-a526-aa78cac905e9/edit?invitationId=inv_ad8e0887-5199-422a-9883-4de20341c21e&page=0_0#)
 
@@ -123,12 +120,17 @@ ERD
 <summary>entity 설계 시 고려사항- click</summary>
 
 - 주요 도메인으로 user, expense, budget, category 으로 나눈다
+    - 변경 : category 는 budget 도메인에서 enum으로 관리한다
+        - 이유 : 사용자가 원하는 카테고리를 생성한다는 조건이 있었으면 category를 다대다로 두어 관리 할텐데
+        - 이미 카테고리는 정해져있다고 요구사항에 명시되어있었으므로 다대다로 하게되면 개발 비용만 증가한다고 생각
 - 요구사항으로 JWT를 통해 유효성을 검증한다는 내용이 있음
     - 이에 대해 JWT와 세션을 함께 구현할까 고민하였지만 우선순위가 아니므로 추후 시간이 남으면 개발
+    - JWT를 통해 회원을 식별
 - Expense와 Budget 관계
     - expense는 budget의 상속관계로 설정한다. 이유는 expense(지출)은 budget(예산) 내에서 사용이 가능하기 때문이다.
-        - 추가로 고려할 사항 expense와 budget의 상속관계가 서로 바뀌어야 할까? 왜냐하면 지출 기준으로 서비스가 동작하므로 ?
-- Category와 Budget 은 N 대 N 관계로 설정한다.
+    - 변경 : 상속관계로 하지 말고 예산을 차감 or 지출 발생시 예산을 초과하는지 check 하는 방법으로 변경
+        ~~- 추가로 고려할 사항 expense와 budget의 상속관계가 서로 바뀌어야 할까? 왜냐하면 지출 기준으로 서비스가 동작하므로 ?~~
+~~- Category와 Budget 은 N 대 N 관계로 설정한다.~~
     - 1(카테고리) 대 N(예산) 관계가 아닌가 ? 왜냐하면 예산별로 카테고리를 가지므로
         - 아니다 하나의 예산이 카테고리를 가지고 또 그 카테고리들은 여러개의 예산에 속할 수 있으므로 N 대 N 관계가 성립되어야 한다.
 
@@ -139,10 +141,10 @@ ERD
 ## 코드리뷰 및 에러 해결
 
 ### 로그인 회원가입
-- [회원가입](https://github.com/rivkode/budget_management/pull/4)
+- [로그인](https://github.com/rivkode/budget_management/pull/7)
 
-### 예산설정
-- [예산설정](https://github.com/Wanted-Internship-Team-Careerly/Location-Based-Foodie-Service/pull/15)
+### 지출 조회
+- [지출 조회](https://github.com/rivkode/budget_management/pull/10)
 
 <br/>
 
