@@ -148,6 +148,79 @@ ERD
 
 <br/>
 
+## 로직 수행 과정
+
+**로그인**
+
+> login 과정
+> 
+> 1. post users/login 로 loginRequest 내용으로 요청
+> 2. 서버는 해당 요청을 JwtAuthenticationFilter에서 인터셉트함 (해당 필터는 UsernamePasswordAuthenticationFilter를 상속받음)
+> 3. JwtAuthenticationFilter 에서 attempAuthentication메서드는 ObjectMapper의 readValue를 사용하여 사용자 정보를 얻어옴
+
+아래는 자세한 내용
+
+UsernamePasswordAuthenticationFilter에서 attemptAuthentication() 를 override 받아 사용,
+
+이 메서드는 HttpServletRequest 가 post인지 체크, request로 부터 username, password도 얻어옴
+
+그리고 성공시와 실패시 로직을 override 하여 구현하였는데 이 부분은 UsernamePasswordAuthenticationFilter부분이 아닌 AbstractAuthenticationProcessingFilter부분을 override 한 것임
+
+**successfulAuthentication의 경우**
+
+email을 autentication에서 가져온뒤 email 내용을 통해 jwt를 생성하고 header에 추가한다 header에 세팅할때는 Prefix에 Bearer과 token을 넣어준다
+그리고 status와 content Type을 지정해주며 ObjectMapper를 통해 바디에 login success를 지정해준다
+
+**unsuccessfulAuthentication의 경우**
+
+- jwt 생성과정을 생략하고 status와 contentType을 지정한다
+- ObjectMapper를 통해 바디에 login failure 를 지정해준다
+
+이렇게 되면 users/login 으로 요청시 위 과정을 거치게 되어 email 의 진위에 따라 token 발급이 성공 혹은 실패로 진행된다.
+- 언제, 어떤 조건으로 success, unsuccess 메서드를 호출하는지, 즉 진행하게되는지를 추가적으로 알아보자
+
+## 토큰 인증
+
+### JwtAythorizationFilter
+
+- 위 필터는 매 요청시 마다 1번씩 검증을 진행하는 필터
+- spring security를 통해 요청이 진행됨
+- OncePerRequestFilter 상속받았기 때문
+
+### doFilterInternal
+
+1. HttpServletRequest에서 header로부터 토큰을 가져옴
+2. 이 가져온 토큰에서 검증, 사용자 정보, 사용자정보를 인증객체에 담는 과정을 진행함
+
+여기서 각각 과정을 살펴보겠음
+
+**검증 notValidate()**
+
+- servletRes 와 token을 인자로 입력받아서 진행 validateToken 메서드에서는 tokenValue를 입력받고 try문으로 Jwts.parserBuilder()를 통해 생성하고 parseClaimsJws 메서드에서 token을 검증함
+- 여기서 발생할 수 있는 예외들을 catch 함
+- 그리고 return으로는 boolean 값을 리턴함
+- 위 과정이 통과가 안될경우 status = bad , contentType, body = INVALID_TOKEN 로 지정하여 입력받았던 servletRes에서 getOutputStream를 통해 실패 응답을 내보냄
+- 그리고 리턴값으로는 true(실패하였기 때문)로 보냄
+
+**사용자 정보 getClaims()**
+
+- SetvletRes와 token을 인자로 입력받음
+- jwtUtil의 getUserInfoFromToken() 메서드에서 token 인자를 전달하여 사용자 정보를 얻음
+- getUserInfoFromToken() 는 key를 가지고 token 에서 정보를 얻어옴
+- 이때 Jwts.parserBuilder()를 통해 parser를 생성하고 parseClaimsJws() 에서 getBody() 를 통해 사용자 정보를 가져옴
+- 성공시 해당 info 정보를 반환함
+- 위 과정 실패 경우 status = bad , contentType, body = INVALID_TOKEN 로 지정하여 입력받았던 servletRes에서 getOutputStream를 통해 실패 응답을 내보냄
+
+**사용자 정보 인증 객체 담기 userInfoInAuthentication(info)**
+
+- 위 사용자 정보인 info를 인자로 전달받아 setAuthentication() 메서드를 통해 인증객체에 사용자 정보를 담는다
+- setAuthentication은 빈 SecurityContext를 생성
+- 사용자 정보를 가지고 만든 Authentication 객체를 context에 Authentication을 set 함
+- 이 SecurityContext를 SecurityContextHolder에 setContext 하여 인증을 처리한다
+
+> 이렇게 인증객체를 SecurityContextHolder에 담으면 이후에 controller에서 사용자 정보를 @AuthenticationPrincipal UserDetailsImpl userDetails 와 같이 가져올 수 있게된다
+> 위 모든 과정은 사용자가 로그인 후 JWT를 가지고 서버로 요청을 할때마다 발생하기 때문에 매번 검증, 인증객체 생성, 처리 등이 진행되므로 위와 같이 사용자 인증 및 처리가 진행된다
+
 ## Authors
 
 <div align="center">
