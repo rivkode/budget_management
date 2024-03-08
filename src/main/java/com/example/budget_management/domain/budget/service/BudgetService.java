@@ -28,9 +28,13 @@ public class BudgetService {
     }
 
 
-    public BudgetResponse updateBudget(BudgetRequest request) {
+    public BudgetResponse updateBudget(User user, BudgetRequest request) {
         Budget budget = budgetRepository.findById(request.getBudgetId())
                 .orElseThrow(() -> new CustomException(CustomErrorCode.NOT_EXIST_BUDGET));
+
+        if (!budget.getUser().equals(user)) {
+            throw new CustomException(CustomErrorCode.NOT_MATCH_USER);
+        }
 
         Budget updatedBudget = budget.update(request.getAmount(), checkCategory(request.getCategoryName()));
 
