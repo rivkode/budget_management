@@ -29,7 +29,7 @@ public class BudgetController {
      */
     @Operation(summary = "예산 생성", description = "예산 생성에 필요한 정보를 통해 예산을 생성 합니다.")
     @PostMapping
-    public ResponseEntity<BudgetResponse> createBudget(@RequestBody BudgetRequest requestDto,
+    public ResponseEntity<BudgetResponse> createBudget(@RequestBody @Valid BudgetRequest requestDto,
             @AuthenticationPrincipal UserDetailsImpl userDetails) {
         User user = userDetails.getUser();
         return ResponseEntity.status(HttpStatus.CREATED).body(budgetService.createBudget(requestDto, user));
