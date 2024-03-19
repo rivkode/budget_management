@@ -13,6 +13,7 @@ import org.springframework.security.config.annotation.web.configurers.AbstractHt
 import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
+import org.springframework.security.web.util.matcher.AntPathRequestMatcher;
 
 @Configuration
 @RequiredArgsConstructor
@@ -54,9 +55,12 @@ public class SecurityConfig {
                 sessionManagement.sessionCreationPolicy(SessionCreationPolicy.STATELESS));
         httpSecurity.authorizeHttpRequests(authorizeHttpRequests ->
                 authorizeHttpRequests
-                        .requestMatchers(HttpMethod.POST, "/api/users/**").permitAll() // '/api/users'로 시작하는 요청 중 모든 POST 접근 허가
-                        .requestMatchers("/swagger-ui/**", "/v3/**").permitAll() // swagger-ui 와 관련된 모든 요청 접근 허가
-                        .requestMatchers(HttpMethod.POST, "/api/verifications").permitAll() // 가입승인 API 요청 허가
+                        .requestMatchers(AntPathRequestMatcher.antMatcher(HttpMethod.POST, "/api/users/**")).permitAll()
+                        .requestMatchers(AntPathRequestMatcher.antMatcher("/swagger-ui/**")).permitAll()
+                        .requestMatchers(AntPathRequestMatcher.antMatcher("/h2-console/**")).permitAll()
+//                        .requestMatchers(HttpMethod.POST, "/api/users/**").permitAll() // '/api/users'로 시작하는 요청 중 모든 POST 접근 허가
+//                        .requestMatchers("/swagger-ui/**", "/v3/**").permitAll() // swagger-ui 와 관련된 모든 요청 접근 허가
+//                        .requestMatchers(HttpMethod.POST, "/api/verifications").permitAll() // 가입승인 API 요청 허가
                         .anyRequest().authenticated() // 그 외 모든 요청 인증처리
         );
 
