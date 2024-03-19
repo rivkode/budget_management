@@ -1,15 +1,8 @@
 package com.example.budget_management.domain.budget;
 
 import com.example.budget_management.domain.user.User;
-import jakarta.persistence.Entity;
-import jakarta.persistence.EnumType;
-import jakarta.persistence.Enumerated;
-import jakarta.persistence.FetchType;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.Id;
-import jakarta.persistence.JoinColumn;
-import jakarta.persistence.ManyToOne;
+import jakarta.persistence.*;
+
 import java.time.LocalDateTime;
 import lombok.Builder;
 import lombok.Getter;
@@ -26,27 +19,28 @@ public class Budget {
 
     private Long amount;
 
-    private LocalDateTime month;
+    private LocalDateTime date;
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "user_id")
     private User user;
 
     @Enumerated(EnumType.STRING)
+    @Column(name = "category", nullable = false)
     private Category category;
 
 
     @Builder
-    public Budget(Long amount, User user, Category category, LocalDateTime month) {
+    public Budget(Long amount, User user, Category category, LocalDateTime date) {
         this.amount = amount;
         this.user = user;
         this.category = category;
-        this.month = month;
+        this.date = date;
     }
 
-    public Budget update(Long amount, Category category) {
+    public Budget update(Long amount, LocalDateTime date) {
         this.amount = amount;
-        this.category = category;
+        this.date = date;
 
         return this;
     }

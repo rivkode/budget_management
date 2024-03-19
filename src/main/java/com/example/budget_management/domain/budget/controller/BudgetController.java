@@ -1,7 +1,8 @@
 package com.example.budget_management.domain.budget.controller;
 
-import com.example.budget_management.domain.budget.dto.BudgetRequest;
-import com.example.budget_management.domain.budget.dto.BudgetResponse;
+import com.example.budget_management.domain.budget.dto.request.CreateBudgetRequest;
+import com.example.budget_management.domain.budget.dto.request.UpdateBudgetRequest;
+import com.example.budget_management.domain.budget.dto.response.CreateOrUpdateBudgetResponse;
 import com.example.budget_management.domain.budget.service.BudgetService;
 import com.example.budget_management.domain.user.User;
 import com.example.budget_management.system.security.UserDetailsImpl;
@@ -29,10 +30,10 @@ public class BudgetController {
      */
     @Operation(summary = "예산 생성", description = "예산 생성에 필요한 정보를 통해 예산을 생성 합니다.")
     @PostMapping
-    public ResponseEntity<BudgetResponse> createBudget(@RequestBody @Valid BudgetRequest requestDto,
+    public ResponseEntity<CreateOrUpdateBudgetResponse> createBudget(@RequestBody @Valid CreateBudgetRequest request,
             @AuthenticationPrincipal UserDetailsImpl userDetails) {
         User user = userDetails.getUser();
-        return ResponseEntity.status(HttpStatus.CREATED).body(budgetService.createBudget(requestDto, user));
+        return ResponseEntity.status(HttpStatus.CREATED).body(budgetService.createBudget(request, user));
     }
 
     /**
@@ -43,12 +44,12 @@ public class BudgetController {
      */
     @Operation(summary = "예산 수정", description = "예산 수정에 필요한 정보를 통해 예산을 수정 합니다.")
     @PutMapping
-    public ResponseEntity<BudgetResponse> updateBudget(
+    public ResponseEntity<CreateOrUpdateBudgetResponse> updateBudget(
         @AuthenticationPrincipal UserDetailsImpl userDetails,
-        @RequestBody BudgetRequest requestDto
+        @RequestBody UpdateBudgetRequest request
     ) {
         User user = userDetails.getUser();
-        return ResponseEntity.ok().body(budgetService.updateBudget(user, requestDto));
+        return ResponseEntity.ok().body(budgetService.updateBudget(user, request));
     }
 
 }
