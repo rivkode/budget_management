@@ -91,8 +91,6 @@ public class ExpenseService {
             switch (category) {
                 case TRANSPORT -> transportList.addAll(expenses);
                 case FOOD -> foodList.addAll(expenses);
-                case LIVING -> livingList.addAll(expenses);
-                case HOUSING -> housingList.addAll(expenses);
                 case ENTERTAINMENT -> entertainmentList.addAll(expenses);
                 case ETC -> etcList.addAll(expenses);
 
