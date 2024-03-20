@@ -12,9 +12,9 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-
-@RequiredArgsConstructor
 @Service
+@RequiredArgsConstructor
+@Transactional
 public class BudgetService {
 
     private final BudgetRepository budgetRepository;
@@ -28,13 +28,9 @@ public class BudgetService {
     }
 
 
-    public BudgetResponse updateBudget(User user, BudgetRequest request) {
+    public BudgetResponse updateBudget(BudgetRequest request) {
         Budget budget = budgetRepository.findById(request.getBudgetId())
                 .orElseThrow(() -> new CustomException(CustomErrorCode.NOT_EXIST_BUDGET));
-
-        if (!budget.getUser().equals(user)) {
-            throw new CustomException(CustomErrorCode.NOT_MATCH_USER);
-        }
 
         Budget updatedBudget = budget.update(request.getAmount(), checkCategory(request.getCategoryName()));
 
