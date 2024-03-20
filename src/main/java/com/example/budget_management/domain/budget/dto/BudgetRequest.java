@@ -5,15 +5,12 @@ import com.example.budget_management.domain.budget.Category;
 import com.example.budget_management.domain.user.User;
 import com.fasterxml.jackson.annotation.JsonFormat;
 import java.time.LocalDateTime;
-
-import jakarta.validation.constraints.NotNull;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 
 @AllArgsConstructor
 @Getter
 public class BudgetRequest {
-    @NotNull
     private long amount;
     private Long budgetId;
     private String categoryName;
