@@ -1,6 +1,6 @@
 package com.example.budget_management.domain.user.service;
 
-import com.example.budget_management.domain.user.dto.SignupRequest;
+import com.example.budget_management.domain.user.dto.request.SignupRequest;
 import com.example.budget_management.system.exception.CustomErrorCode;
 import com.example.budget_management.system.exception.CustomException;
 import java.util.regex.Pattern;

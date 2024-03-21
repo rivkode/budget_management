@@ -1,6 +1,6 @@
 package com.example.budget_management.system.security;
 
-import com.example.budget_management.domain.user.dto.LoginRequest;
+import com.example.budget_management.domain.user.dto.request.LoginRequest;
 import com.example.budget_management.system.common.ApiResponseDto;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import jakarta.servlet.FilterChain;
