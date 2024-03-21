@@ -20,7 +20,11 @@ public enum CustomErrorCode {
     NOT_EXIST_EXPENSE(HttpStatus.BAD_REQUEST.value(),
             "지출이 존재하지 않습니다."),
     NOT_EXIST_BUDGET(HttpStatus.BAD_REQUEST.value(),
-            "예산이 존재하지 않습니다");
+            "예산이 존재하지 않습니다"),
+    UNABLE_TO_SEND_EMAIL(HttpStatus.BAD_REQUEST.value(), "이메일 전송에 실패하였습니다."),
+    INTERNAL_SEVER_ERROR(HttpStatus.BAD_REQUEST.value(), "서버 에러 입니다"),
+    NOT_FOUND_VERIFY_CODE(HttpStatus.BAD_REQUEST.value(), "인증 코드를 찾을 수 없습니다."),
+    INVALID_VERIFY_CODE(HttpStatus.BAD_REQUEST.value(), "유효하지 않은 인증코드 입니다.");
 
     private final int errorCode;
     private final String errorMessage;
