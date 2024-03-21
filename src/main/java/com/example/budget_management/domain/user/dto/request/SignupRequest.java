@@ -1,4 +1,4 @@
-package com.example.budget_management.domain.user.dto;
+package com.example.budget_management.domain.user.dto.request;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;
